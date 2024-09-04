@@ -31,6 +31,10 @@ const createUser = async (req, res) => {
             role: "admin"
         })
 
+        await db.profile.create({
+            email: email
+            });
+
         console.log("Admin is created successfully")
     } else {
         console.log("Admin is already seeded")

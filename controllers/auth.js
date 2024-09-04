@@ -150,12 +150,11 @@ const resetPassword = async (req, res) => {
             }
         );
 
-        return res.json({
+        return res.status(200).json({
             message: 'Password reset successful'
         });
 
     } catch (err) {
-        console.log(err)
         return res.status(500).json({
             message: "Something went wrong",
             err: err
