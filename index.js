@@ -20,6 +20,10 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded payloads p
 const authRouter = require("./routes/auth")
 app.use('/auth', authRouter)
 
+const studentRouter = require("./routes/student")
+app.use('/api', studentRouter)
+
+
 
 const createUser = async (req, res) => {
     const findAdmin = await db.users.findOne({ where: { role: "admin" } })
@@ -32,7 +36,7 @@ const createUser = async (req, res) => {
         })
 
         await db.profile.create({
-            email: email
+            email: "admin@gmail.com"
             });
 
         console.log("Admin is created successfully")

@@ -1,6 +1,6 @@
 const {Sequelize} = require("sequelize")
 
-const sequelize = new Sequelize('SMS', 'root', '', {
+const sequelize = new Sequelize('sns', 'root', '', {
     host: 'localhost',
     dialect: 'mysql'
   });
@@ -24,8 +24,14 @@ db.Sequelize = Sequelize;
 
 db.users = require("./user")(sequelize, Sequelize)
 db.profile = require("./profile")(sequelize, Sequelize)
+db.student = require("./student")(sequelize, Sequelize)
+db.parent = require("./parent")(sequelize, Sequelize)
 
 db.users.hasOne(db.profile);
 db.profile.belongsTo(db.users)
+
+db.parent.hasMany(db.student)
+db.student.belongsTo(db.parent)
+
 
 module.exports = db;

@@ -1,5 +1,6 @@
 const {users} = require("../modules/index")
 const jwt = require('jsonwebtoken')
+const nodemailer = require('nodemailer')
 const bcrypt = require("bcrypt")
 
 const login = async (req, res) => {
@@ -60,12 +61,13 @@ const user_forgotPassword = async (req, res) => {
             { where: { email: email } }
         );
 
-        if (updated === 0) {
+        if (!updated) {
             return res.status(500).json({
-                message: "Something went wrong"
+                message: "Something went wrong",
             });
         }
 
+        //nodemailer ko code haru
         const transporter = nodemailer.createTransport({
             service: "Gmail",
             host: "smtp.gmail.com",
@@ -79,7 +81,7 @@ const user_forgotPassword = async (req, res) => {
 
         const mailOptions = {
             from: "anjalsotang26@gmail.com",
-            to: email,
+            to: "anjalsotang26@gmail.com",
             subject: "Please reset OTP",
             text: `Your OTP (It expires after 1 min) : ${otp}`
         };
@@ -95,6 +97,7 @@ const user_forgotPassword = async (req, res) => {
                 });
             }
         });
+
     } catch (err) {
         return res.status(500).json({
             message: "Something went wrong"
