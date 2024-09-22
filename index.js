@@ -23,6 +23,8 @@ const parentRouter = require("./routes/parent");
 const teacherRouter = require("./routes/teacher");
 const expenseRouter = require("./routes/expenses");
 const feesRouter = require("./routes/fees");
+const feeType = require('./routes/feeType');
+
 
 app.use('/auth', authRouter);
 app.use('/api', [
@@ -30,10 +32,9 @@ app.use('/api', [
     parentRouter,
     teacherRouter,
     expenseRouter,
-    feesRouter
+    feesRouter,
+    feeType
 ]);
-
-
 
 const createUser = async (req, res) => {
     const findAdmin = await db.users.findOne({ where: { role: "admin" } })

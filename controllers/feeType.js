@@ -1,43 +1,29 @@
-const { student, fees, parent } = require("../modules")
+const { feeTypes } = require("../modules")
 const { getPagination, getPagingData } = require('../helpers/pagination');
 const { Op } = require('sequelize');
 
 
-const addFees = async (req, res) => {
-    const { id, feId, amount, dueDate, status } = req.body;
+const addFeeType = async (req, res) => {
+    const { id, name, feeType, description } = req.body;
 
     try {
+        const find = await feeTypes.findByPk(id)
 
-        const find = await student.findByPk(id)
         if (!find) {
-            return res.status(404).json({ message: "Stundent is not available!!" })
-        }
-        const validate = await fees.findOne({
-            where:
-            {
-                feeTypeId: feId,
-                dueDate,
-                status,
-                studentId: id
-            }
-        })
-
-        if (!validate) {
-            const response = await fees.create({
-                amount,
-                feeTypeId: feId,
-                dueDate,
-                status,
-                studentId: id
+            const response = await feeTypes.create({
+                id,
+                name, 
+                feeType, 
+                description
             })
 
             return res.status(200).json({
-                message: "Fees added successfully",
+                message: "FeeType added successfully",
                 data: response
             })
         } else {
             return res.status(409).json({
-                message: "Fee is already added"
+                message: "FeeType is already added"
             })
         }
 
@@ -50,7 +36,7 @@ const addFees = async (req, res) => {
     }
 }
 
-const viewFees = async (req, res) => {
+const viewFeeType = async (req, res) => {
     try {
         // Get page, size, and name from query parameters (with default values)
         const { page, size, name } = req.query;
@@ -61,21 +47,7 @@ const viewFees = async (req, res) => {
         // Build the search condition for the name
         const condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
 
-        const response = await fees.findAndCountAll({
-            attributes: [
-                'studentId',
-                'amount',
-                'dueDate',
-                'status'
-            ],
-            include: [{
-                model: student,
-                attributes: ['name', 'gender', 'class'],
-                include: [{
-                    model: parent, // Assuming parent model is related to student
-                    attributes: ['email', 'phone'] // Add desired parent attributes
-                }]
-            }],
+        const response = await feeTypes.findAndCountAll({
             where: condition,
             offset: offset,
             limit: limit,
@@ -83,7 +55,6 @@ const viewFees = async (req, res) => {
 
         // Get paginated data and structure the response
         const pagingData = getPagingData(response, page, limit);
-
 
         return res.status(200).json({
             data: pagingData
@@ -98,12 +69,12 @@ const viewFees = async (req, res) => {
     }
 }
 
-const updateFees = async (req, res) => {
+const updateFeeType = async (req, res) => {
     const { id } = req.params;
-    const { amount, dueDate, status } = req.body;
+    const { name, feeType, description  } = req.body;
 
     try {
-        const fee = await fees.findByPk(id);
+        const fee = await feeTypes.findByPk(id);
         if (!fee) {
             return res.status(404).json({
                 message: "Fee data is not avaiblable"
@@ -113,12 +84,12 @@ const updateFees = async (req, res) => {
         // Create an object to hold only the fields that are being updated
         const updatedFields = {};
 
-        if (amount) updatedFields.amount = amount;
-        if (dueDate) updatedFields.dueDate = dueDate;
-        if (status) updatedFields.status = status;
+        if (name) updatedFields.name = name;
+        if (feeType) updatedFields.feeType = feeType;
+        if (description) updatedFields.description = description;
 
         // Update the profile
-        await fees.update(updatedFields, {
+        await feeTypes.update(updatedFields, {
             where: {
                 id: id,
             },
@@ -136,16 +107,16 @@ const updateFees = async (req, res) => {
     }
 }
 
-const deleteFees = async (req, res) => {
+const deleteFeeType = async (req, res) => {
     const { id } = req.params;
     try {
-        const fee = await fees.findByPk(id);
+        const fee = await feeTypes.findByPk(id);
         if (!fee) {
             return res.status(404).json({
-                message: "Fee data is already deleted"
+                message: "FeeType's data is already deleted"
             })
         }
-        await fees.destroy({where: {
+        await feeTypes.destroy({where: {
             id: id
         }})
 
@@ -162,8 +133,8 @@ const deleteFees = async (req, res) => {
 }
 
 module.exports = {
-    addFees,
-    viewFees,
-    updateFees,
-    deleteFees
+    addFeeType,
+    viewFeeType,
+    updateFeeType,
+    deleteFeeType
 }

@@ -3,9 +3,6 @@ module.exports = (sequelize, Sequelize) => {
         amount: {
             type: Sequelize.INTEGER
         },
-        feeType: {
-            type: Sequelize.STRING
-        },
         dueDate: {
             type: Sequelize.DATE
         },

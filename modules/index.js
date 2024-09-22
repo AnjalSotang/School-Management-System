@@ -29,6 +29,7 @@ db.parent = require("./parent")(sequelize, Sequelize)
 db.teacher = require("./teacher")(sequelize, Sequelize)
 db.expense = require("./expenses")(sequelize, Sequelize)
 db.fees = require("./fees")(sequelize, Sequelize)
+db.feeTypes = require("./feeType")(sequelize, Sequelize)
 
 db.users.hasOne(db.profile);
 db.profile.belongsTo(db.users)
@@ -37,6 +38,8 @@ db.parent.hasMany(db.student)
 db.student.belongsTo(db.parent)
 db.student.hasMany(db.fees)
 db.fees.belongsTo(db.student)
+db.feeTypes.hasMany(db.fees)
+db.fees.belongsTo(db.feeTypes)
 
 db.teacher.belongsToMany(db.student, { through: 'StudentTeacher', foreignKey: 'teacherId' });
 db.student.belongsToMany(db.teacher, { through: 'StudentTeacher', foreignKey: 'studentId' });
