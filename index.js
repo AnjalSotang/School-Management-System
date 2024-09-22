@@ -17,11 +17,21 @@ app.use(express.json()); // Parse JSON payloads
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded payloads parse the form data
 
 
-const authRouter = require("./routes/auth")
-app.use('/auth', authRouter)
+const authRouter = require("./routes/auth");
+const studentRouter = require("./routes/student");
+const parentRouter = require("./routes/parent");
+const teacherRouter = require("./routes/teacher");
+const expenseRouter = require("./routes/expenses");
+const feesRouter = require("./routes/fees");
 
-const studentRouter = require("./routes/student")
-app.use('/api', studentRouter)
+app.use('/auth', authRouter);
+app.use('/api', [
+    studentRouter,
+    parentRouter,
+    teacherRouter,
+    expenseRouter,
+    feesRouter
+]);
 
 
 
