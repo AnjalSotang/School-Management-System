@@ -24,6 +24,7 @@ const teacherRouter = require("./routes/teacher");
 const expenseRouter = require("./routes/expenses");
 const feesRouter = require("./routes/fees");
 const feeType = require('./routes/feeType');
+const subject = require('./routes/subject');
 
 
 app.use('/auth', authRouter);
@@ -33,7 +34,8 @@ app.use('/api', [
     teacherRouter,
     expenseRouter,
     feesRouter,
-    feeType
+    feeType, 
+    subject
 ]);
 
 const createUser = async (req, res) => {

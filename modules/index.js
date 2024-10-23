@@ -30,6 +30,7 @@ db.teacher = require("./teacher")(sequelize, Sequelize)
 db.expense = require("./expenses")(sequelize, Sequelize)
 db.fees = require("./fees")(sequelize, Sequelize)
 db.feeTypes = require("./feeType")(sequelize, Sequelize)
+db.subject = require("./subject")(sequelize, Sequelize)
 
 db.users.hasOne(db.profile);
 db.profile.belongsTo(db.users)
